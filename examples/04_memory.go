@@ -48,7 +48,6 @@ AI:`,
 		"My name is Alice and I love programming in Go.",
 		"What programming language did I mention?",
 		"What is my name?",
-		"Can you write a simple Hello World in that language?",
 	}
 
 	for i, question := range questions {
@@ -111,10 +110,7 @@ AI:`,
 	testQuestions := []string{
 		"I live in Paris",
 		"I work as a software engineer",
-		"I enjoy hiking on weekends",
 		"Where do I live?", // Should remember (within window)
-		"What do I do for work?", // Should remember (within window)
-		"What do I enjoy?", // Should remember (within window)
 	}
 
 	for i, question := range testQuestions {
@@ -154,63 +150,4 @@ AI:`,
 			return
 		}
 	}
-
-	// Example 3: Manual Memory Management
-	fmt.Println("Example 3: Manual Memory Management")
-	fmt.Println("Explicitly controlling conversation context\n")
-
-	type ConversationTurn struct {
-		Human string
-		AI    string
-	}
-
-	var conversationHistory []ConversationTurn
-
-	manualPrompt := prompts.NewPromptTemplate(
-		`You are a helpful assistant. Here's our conversation so far:
-{{.context}}
-
-Current question: {{.question}}
-Provide a helpful response.`,
-		[]string{"context", "question"},
-	)
-
-	manualQuestions := []string{
-		"What's 15 + 27?",
-		"Now multiply that result by 3",
-		"What was my first question?",
-	}
-
-	for i, question := range manualQuestions {
-		fmt.Printf("Turn %d - Human: %s\n", i+1, question)
-
-		// Build context from history
-		context := ""
-		for j, turn := range conversationHistory {
-			context += fmt.Sprintf("Turn %d:\nHuman: %s\nAI: %s\n\n", j+1, turn.Human, turn.AI)
-		}
-
-		inputs := map[string]any{
-			"context":  context,
-			"question": question,
-		}
-
-		chain := chains.NewLLMChain(llm, manualPrompt)
-		result, err := chains.Call(ctx, chain, inputs)
-		if err != nil {
-			log.Printf("Error: %v\n", err)
-			return
-		}
-
-		response := result[chain.OutputKey].(string)
-		fmt.Printf("Turn %d - AI: %s\n\n", i+1, response)
-
-		// Manually add to history
-		conversationHistory = append(conversationHistory, ConversationTurn{
-			Human: question,
-			AI:    response,
-		})
-	}
-
-	fmt.Println("Final conversation history contains", len(conversationHistory), "turns")
 }

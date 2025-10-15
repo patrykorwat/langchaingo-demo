@@ -117,44 +117,4 @@ func RunChains() {
 
 	taglineText := tagline[taglineChain.OutputKey].(string)
 	fmt.Printf("Step 3 - Tagline: %s\n", taglineText)
-
-	// Example 3: Conversation Chain with Memory
-	fmt.Println("\nExample 3: Conversation Chain")
-	fmt.Println("Having a multi-turn conversation\n")
-
-	conversationPrompt := prompts.NewPromptTemplate(
-		"You are a helpful assistant. {{.history}}\n\nHuman: {{.input}}\nAssistant:",
-		[]string{"history", "input"},
-	)
-
-	conversationChain := chains.NewLLMChain(llm, conversationPrompt)
-
-	// Simulate conversation history
-	history := ""
-	questions := []string{
-		"What is the capital of France?",
-		"What is it famous for?",
-		"What's the best time to visit?",
-	}
-
-	for i, question := range questions {
-		fmt.Printf("Turn %d - Human: %s\n", i+1, question)
-
-		inputs := map[string]any{
-			"history": history,
-			"input":   question,
-		}
-
-		result, err := chains.Call(ctx, conversationChain, inputs)
-		if err != nil {
-			log.Printf("Error: %v\n", err)
-			return
-		}
-
-		response := result[conversationChain.OutputKey].(string)
-		fmt.Printf("Turn %d - Assistant: %s\n\n", i+1, response)
-
-		// Update history
-		history += fmt.Sprintf("Human: %s\nAssistant: %s\n", question, response)
-	}
 }

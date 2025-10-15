@@ -65,19 +65,5 @@ func RunBasicLLM() {
 		log.Printf("Error: %v\n", err)
 		return
 	}
-	fmt.Printf("%s\n\n", completion)
-
-	// Example 3: Max tokens control
-	fmt.Println("Example 3: Max Tokens Control")
-	completion, err = llms.GenerateFromSinglePrompt(
-		ctx,
-		llm,
-		"Explain quantum computing",
-		llms.WithMaxTokens(50),
-	)
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-		return
-	}
-	fmt.Printf("Response (limited to ~50 tokens): %s\n", completion)
+	fmt.Printf("%s\n", completion)
 }
