@@ -27,8 +27,8 @@ func RunOutputParsers() {
 
 	ctx := context.Background()
 
-	// Example 1: JSON Output
-	fmt.Println("Example 1: JSON Output Parsing")
+	// JSON Output Parsing
+	fmt.Println("JSON Output Parsing")
 	fmt.Println("Request structured data in JSON format\n")
 
 	jsonPrompt := prompts.NewPromptTemplate(
@@ -79,33 +79,5 @@ Return only the JSON object, no additional text.`,
 		fmt.Printf("  Age: %d\n", person.Age)
 		fmt.Printf("  Occupation: %s\n", person.Occupation)
 		fmt.Printf("  Hobbies: %v\n", person.Hobbies)
-	}
-
-	// Example 2: List Output
-	fmt.Println("\n" + strings.Repeat("=", 80))
-	fmt.Println("Example 2: Comma-Separated List Parsing")
-	fmt.Println("Extract items as a simple list\n")
-
-	listPrompt := prompts.NewPromptTemplate(
-		`List the main ingredients in {{.dish}}.
-Return only the ingredients as a comma-separated list, nothing else.`,
-		[]string{"dish"},
-	)
-
-	listChain := chains.NewLLMChain(llm, listPrompt)
-
-	dishResult, err := chains.Run(ctx, listChain, "spaghetti carbonara")
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-		return
-	}
-
-	fmt.Printf("Raw output: %s\n", dishResult)
-
-	// Parse the list
-	ingredients := strings.Split(dishResult, ",")
-	fmt.Printf("\nParsed ingredients (%d items):\n", len(ingredients))
-	for i, ingredient := range ingredients {
-		fmt.Printf("  %d. %s\n", i+1, strings.TrimSpace(ingredient))
 	}
 }

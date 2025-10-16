@@ -25,48 +25,8 @@ func RunChains() {
 
 	ctx := context.Background()
 
-	// Example 1: Simple LLM Chain
-	fmt.Println("Example 1: Simple LLM Chain")
-	fmt.Println("Create a story about a topic, then summarize it\n")
-
-	// First chain: Generate a story
-	storyPrompt := prompts.NewPromptTemplate(
-		"Write a short 2-paragraph story about {{.topic}}. Make it interesting and engaging.",
-		[]string{"topic"},
-	)
-
-	storyChain := chains.NewLLMChain(llm, storyPrompt)
-
-	storyResult, err := chains.Run(ctx, storyChain, "a robot learning to paint")
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-		return
-	}
-
-	fmt.Println("Generated Story:")
-	fmt.Println(storyResult)
-	fmt.Println()
-
-	// Second chain: Summarize the story
-	summaryPrompt := prompts.NewPromptTemplate(
-		"Summarize the following story in one sentence:\n\n{{.story}}",
-		[]string{"story"},
-	)
-
-	summaryChain := chains.NewLLMChain(llm, summaryPrompt)
-
-	summaryResult, err := chains.Run(ctx, summaryChain, storyResult)
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-		return
-	}
-
-	fmt.Println("Summary:")
-	fmt.Println(summaryResult)
-	fmt.Println()
-
-	// Example 2: Sequential Chain
-	fmt.Println("Example 2: Sequential Chain")
+	// Sequential Chain: Generate product name → Write description → Create tagline
+	fmt.Println("Sequential Chain Example")
 	fmt.Println("Generate product name → Write description → Create tagline\n")
 
 	// Chain 1: Product name

@@ -29,20 +29,8 @@ func RunAgents() {
 
 	ctx := context.Background()
 
-	// Example 1: Custom Calculator Tool
-	fmt.Println("Example 1: Calculator Tool")
-	calculatorTool := tools.Calculator{}
-
-	fmt.Println("Testing: 25 * 4 + 10")
-	result, err := calculatorTool.Call(ctx, "25 * 4 + 10")
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-	} else {
-		fmt.Printf("Result: %s\n\n", result)
-	}
-
-	// Example 2: Agent with Multiple Tools
-	fmt.Println("Example 2: Agent with Multiple Tools")
+	// Agent with Multiple Tools
+	fmt.Println("Agent with Multiple Tools")
 	fmt.Println("Agent can choose which tool to use\n")
 
 	allTools := []tools.Tool{

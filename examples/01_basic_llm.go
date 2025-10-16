@@ -24,9 +24,10 @@ func RunBasicLLM() {
 
 	ctx := context.Background()
 
-	// Example 1: Simple completion
-	fmt.Println("Example 1: Simple Completion")
-	fmt.Println("Prompt: 'Explain what LangChain is in one sentence'")
+	// Simple completion with temperature control
+	fmt.Println("Simple Completion with Temperature Control")
+	fmt.Println("Prompt: 'Explain what LangChain is in one sentence'\n")
+
 	completion, err := llms.GenerateFromSinglePrompt(
 		ctx,
 		llm,
@@ -37,33 +38,5 @@ func RunBasicLLM() {
 		log.Printf("Error: %v\n", err)
 		return
 	}
-	fmt.Printf("Response: %s\n\n", completion)
-
-	// Example 2: Completion with temperature control
-	fmt.Println("Example 2: Temperature Control (Creative vs Deterministic)")
-	fmt.Println("High temperature (0.9) - More creative:")
-	completion, err = llms.GenerateFromSinglePrompt(
-		ctx,
-		llm,
-		"Write a creative tagline for a coffee shop",
-		llms.WithTemperature(0.9),
-	)
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-		return
-	}
-	fmt.Printf("%s\n\n", completion)
-
-	fmt.Println("Low temperature (0.1) - More deterministic:")
-	completion, err = llms.GenerateFromSinglePrompt(
-		ctx,
-		llm,
-		"Write a creative tagline for a coffee shop",
-		llms.WithTemperature(0.1),
-	)
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-		return
-	}
-	fmt.Printf("%s\n", completion)
+	fmt.Printf("Response: %s\n", completion)
 }

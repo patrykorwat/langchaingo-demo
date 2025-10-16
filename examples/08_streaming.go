@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"strings"
 	"time"
 
 	"github.com/tmc/langchaingo/llms"
@@ -26,31 +25,10 @@ func RunStreamingExample() {
 
 	ctx := context.Background()
 
-	// Example 1: Basic Streaming
-	fmt.Println("Example 1: Basic Streaming Response")
-	fmt.Println("Watch the response appear in real-time\n")
-	fmt.Println("Prompt: 'Write a haiku about programming'\n")
-	fmt.Println("Response:")
-
-	_, err = llm.GenerateContent(ctx, []llms.MessageContent{
-		llms.TextParts(llms.ChatMessageTypeHuman, "Write a haiku about programming"),
-	}, llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
-		fmt.Print(string(chunk))
-		return nil
-	}))
-
-	if err != nil {
-		log.Printf("Error: %v\n", err)
-		return
-	}
-
-	fmt.Println("\n")
-
-	// Example 2: Streaming with Timing
-	fmt.Println(strings.Repeat("=", 80))
-	fmt.Println("Example 2: Streaming with Timing Metrics")
+	// Streaming with Timing Metrics
+	fmt.Println("Streaming with Timing Metrics")
 	fmt.Println("Measure time to first token and total time\n")
-	fmt.Println("Prompt: 'List 3 programming languages'\n")
+	fmt.Println("Prompt: 'Write a haiku about programming'\n")
 	fmt.Println("Response:")
 
 	startTime := time.Now()
@@ -58,7 +36,7 @@ func RunStreamingExample() {
 	firstToken := true
 
 	_, err = llm.GenerateContent(ctx, []llms.MessageContent{
-		llms.TextParts(llms.ChatMessageTypeHuman, "List 3 popular programming languages with one sentence about each"),
+		llms.TextParts(llms.ChatMessageTypeHuman, "Write a haiku about programming"),
 	}, llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
 		if firstToken {
 			firstTokenTime = time.Now()

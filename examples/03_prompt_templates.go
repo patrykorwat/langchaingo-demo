@@ -25,29 +25,8 @@ func RunPromptTemplates() {
 
 	ctx := context.Background()
 
-	// Example 1: Simple Template
-	fmt.Println("Example 1: Simple Template with Single Variable")
-	fmt.Println("Template: 'Explain {{.concept}} to a 5-year-old'\n")
-
-	simpleTemplate := prompts.NewPromptTemplate(
-		"Explain {{.concept}} to a 5-year-old in 2-3 sentences.",
-		[]string{"concept"},
-	)
-
-	chain := chains.NewLLMChain(llm, simpleTemplate)
-
-	concepts := []string{"gravity", "photosynthesis"}
-	for _, concept := range concepts {
-		result, err := chains.Run(ctx, chain, concept)
-		if err != nil {
-			log.Printf("Error: %v\n", err)
-			continue
-		}
-		fmt.Printf("Concept: %s\n%s\n\n", concept, result)
-	}
-
-	// Example 2: Multiple Variables
-	fmt.Println("Example 2: Template with Multiple Variables")
+	// Template with Multiple Variables
+	fmt.Println("Template with Multiple Variables")
 	fmt.Println("Email generator with tone, recipient, and topic\n")
 
 	emailTemplate := prompts.NewPromptTemplate(

@@ -26,8 +26,8 @@ func RunMemory() {
 
 	ctx := context.Background()
 
-	// Example 1: Simple Conversation Buffer Memory
-	fmt.Println("Example 1: Conversation Buffer Memory")
+	// Conversation Buffer Memory
+	fmt.Println("Conversation Buffer Memory")
 	fmt.Println("Maintains full conversation history\n")
 
 	// Create a simple buffer memory
@@ -86,65 +86,6 @@ AI:`,
 
 		// Save to memory
 		err = bufferMemory.SaveContext(ctx, map[string]any{"input": question}, map[string]any{"output": response})
-		if err != nil {
-			log.Printf("Error saving to memory: %v\n", err)
-			return
-		}
-	}
-
-	// Example 2: Conversation Window Memory
-	fmt.Println("Example 2: Conversation Window Memory")
-	fmt.Println("Maintains only the last K interactions\n")
-
-	// Create window memory that keeps only last 2 interactions
-	windowMemory := memory.NewConversationWindowBuffer(2)
-
-	windowPrompt := prompts.NewPromptTemplate(
-		`Conversation (recent messages only):
-{{.history}}
-Human: {{.input}}
-AI:`,
-		[]string{"history", "input"},
-	)
-
-	testQuestions := []string{
-		"I live in Paris",
-		"I work as a software engineer",
-		"Where do I live?", // Should remember (within window)
-	}
-
-	for i, question := range testQuestions {
-		fmt.Printf("Turn %d - Human: %s\n", i+1, question)
-
-		// Load memory
-		memoryVars, err := windowMemory.LoadMemoryVariables(ctx, map[string]any{})
-		if err != nil {
-			log.Printf("Error loading memory: %v\n", err)
-			return
-		}
-
-		chatHistory := ""
-		if history, ok := memoryVars["history"]; ok {
-			chatHistory = fmt.Sprintf("%v", history)
-		}
-
-		inputs := map[string]any{
-			"history": chatHistory,
-			"input":   question,
-		}
-
-		chain := chains.NewLLMChain(llm, windowPrompt)
-		result, err := chains.Call(ctx, chain, inputs)
-		if err != nil {
-			log.Printf("Error: %v\n", err)
-			return
-		}
-
-		response := result[chain.OutputKey].(string)
-		fmt.Printf("Turn %d - AI: %s\n\n", i+1, response)
-
-		// Save to memory
-		err = windowMemory.SaveContext(ctx, map[string]any{"input": question}, map[string]any{"output": response})
 		if err != nil {
 			log.Printf("Error saving to memory: %v\n", err)
 			return
